@@ -76,10 +76,10 @@ func print(matrix [][]int) {
 	fmt.Println("--------------")
 }
 func rotate(matrix [][]int) {
-	fmt.Println(matrix)
+	// fmt.Println(matrix)
 
 	var n = len(matrix)
-	fmt.Println(n)
+	// fmt.Println(n)
 	if n == 1 {
 		return
 	}
@@ -90,8 +90,12 @@ func rotate(matrix [][]int) {
 	rotatex(matrix, 0, n-1, s)
 
 }
+
+// right is include
 func rotatex(matrix [][]int, left int, right int, s []int) {
-	fmt.Println(left, right)
+	// println("------rotatex------")
+	// print(matrix)
+	// fmt.Printf("left: %d, right: %d\n", left, right)
 
 	if left >= right {
 		return
@@ -99,40 +103,43 @@ func rotatex(matrix [][]int, left int, right int, s []int) {
 
 	var n = len(matrix)
 
-	var width = right - left + 1
-
-	// var left int = 0
-	// var right int = n - 1
-	// fmt.Println(left, right)
-
-	print(matrix)
-	// return
-
-	// tmp store the most top line in s
+	// temporarily store the most top line in s
+	// CAUTION: this is reference
 	// s = matrix[0]
+	// CAUTION: use copy instead
 	// copy(s, matrix[0])
+	// copy the whole left'th line of matrix
 	copy(s, matrix[left])
+	// fmt.Printf("copy top to tmp: %v\n", s)
 
 	// left most line rotate to top most line
-	for i := left; i < width; i++ {
-		matrix[left][right-i] = matrix[i][left]
+	for i := left; i <= right; i++ {
+		matrix[left][n-1-i] = matrix[i][left]
 	}
-	print(matrix)
+	// println("after left to top...")
+	// print(matrix)
+
 	// down most line rotate to left most line
-	for i := left; i < width; i++ {
+	for i := left; i <= right; i++ {
 		matrix[i][left] = matrix[right][i]
 	}
-	print(matrix)
+	// println("after down to left...")
+	// print(matrix)
+
 	// right most line rotate to down most line
-	for i := left; i < width; i++ {
-		matrix[right][i] = matrix[right-i][right]
+	for i := left; i <= right; i++ {
+		matrix[right][i] = matrix[n-1-i][right]
 	}
-	print(matrix)
+	// println("after right to down...")
+	// print(matrix)
+
 	// restore tmp to the most right line
-	for i := left; i < width; i++ {
-		matrix[left+i][right] = s[left+i]
+	for i := left; i <= right; i++ {
+		// matrix[n-i][right] = s[n-i]
+		matrix[i][right] = s[i]
 	}
-	print(matrix)
+	// println("after [tmp] top to right...")
+	// print(matrix)
 
 	// TODO: recursively rotate
 	// pass slice of inner matrix
